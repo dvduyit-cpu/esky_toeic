@@ -1,0 +1,2 @@
+﻿from pathlib import Path
+p=Path('resources/js/Pages/Portals.vue');s=p.read_text(encoding='utf-8-sig').replace('<a v-if="page.props.branding.support_email"', '<a aria-label="Liên hệ hỗ trợ thí sinh" v-if="page.props.branding.support_email"').replace('<a href="/admin/login" class="staff-entry">','<a href="/admin/login" class="staff-entry" aria-label="Cổng quản trị">');p.write_text(s,encoding='utf-8')
