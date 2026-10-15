@@ -1,0 +1,5 @@
+﻿from pathlib import Path
+import re
+p=Path('resources/css/app.css');s=p.read_text(encoding='utf-8-sig');s=re.sub(r'font-size:(\d+)px',r'font-size:calc(\1px * var(--font-scale,1))',s);s=s.replace('color:var(--primary)','color:var(--accent,var(--primary))');p.write_text(s,encoding='utf-8')
+p=Path('resources/js/app.js');s=p.read_text(encoding='utf-8-sig').replace("'--corner-radius': `${next.corner_radius}px`","'--corner-radius': `${next.corner_radius}px`, '--font-scale': String(next.font_size / 15)");p.write_text(s,encoding='utf-8')
+p=Path('resources/views/app.blade.php');s=p.read_text(encoding='utf-8-sig');s=s.replace('    <style>:root','    @vite([\'resources/js/app.js\',\'resources/css/app.css\'])\n    <style>:root').replace('--corner-radius:{{ $branding[\'corner_radius\'] }}px','--corner-radius:{{ $branding[\'corner_radius\'] }}px;--font-scale:{{ $branding[\'font_size\'] / 15 }}');s=s.replace("\n    @vite(['resources/js/app.js','resources/css/app.css'])\n    @inertiaHead",'\n    @inertiaHead');p.write_text(s,encoding='utf-8')

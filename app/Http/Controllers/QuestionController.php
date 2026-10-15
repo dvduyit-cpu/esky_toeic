@@ -1,17 +1,141 @@
 <?php
+
 namespace App\Http\Controllers;
-use App\Models\{Question,QuestionGroup};
+
+use App\Models\Question;
+use App\Models\QuestionGroup;
+use App\Models\Subject;
+use App\Support\ExamTrack;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
-class QuestionController extends Controller {
- private function staff():void{abort_unless(auth()->user()->isStaff(),403);}
- public function index(Request $r){$this->staff();return Inertia::render('Questions',['questions'=>Question::query()->select('id','part','content','difficulty','status','question_group_id','created_by')->when($r->query('part'),fn($q,$v)=>$q->where('part',$v))->latest()->paginate(15)->withQueryString(),'groups'=>QuestionGroup::orderByDesc('id')->limit(100)->get(['id','part','title']),'part'=>$r->query('part','')]);}
- public function storeGroup(Request $r){$this->staff();$v=$r->validate(['part'=>'required|integer|in:1,2,3,4,6,7','title'=>'nullable|string|max:255','passage'=>'nullable|string|max:60000','media_path'=>'nullable|string|max:500']);QuestionGroup::create($v+['created_by'=>auth()->id()]);return back()->with('success','Đã thêm nhóm câu hỏi.');}
- public function store(Request $r){$this->staff();$v=$r->validate(['part'=>'required|integer|between:1,7','question_group_id'=>'nullable|integer|exists:question_groups,id','content'=>'required|string|max:10000','options'=>'required|array','options.A'=>'required|string|max:10000','options.B'=>'required|string|max:10000','options.C'=>'nullable|string|max:10000','options.D'=>'nullable|string|max:10000','correct_option'=>['required',Rule::in(['A','B','C','D'])],'explanation'=>'nullable|string|max:20000','difficulty'=>['required',Rule::in(['easy','medium','hard'])]]);
- if(!array_key_exists($v['correct_option'],$v['options'])||!filled($v['options'][$v['correct_option']]))return back()->withErrors(['correct_option'=>'Đáp án đúng phải có nội dung.']);
- if($r->filled('question_group_id') && QuestionGroup::findOrFail($v['question_group_id'])->part!== (int)$v['part'])return back()->withErrors(['question_group_id'=>'Nhóm câu hỏi không cùng Part.']);
- if(in_array((int)$v['part'],[3,4,6,7],true)&&empty($v['question_group_id']))return back()->withErrors(['question_group_id'=>'Part này cần gắn câu hỏi vào nhóm tư liệu.']);
- Question::create($v+['created_by'=>auth()->id(),'status'=>'draft']);return back()->with('success','Đã tạo câu hỏi nháp.');}
- public function destroy(Question $question){$this->staff();abort_unless(auth()->user()->role==='admin'||$question->created_by===auth()->id(),403);abort_if($question->exams()->exists(),422,'Câu hỏi đã sử dụng trong đề.');$question->delete();return back();}
+
+class QuestionController extends Controller
+{
+    private function owner($model): void
+    {
+        abort_unless(auth()->user()->role === 'admin' || $model->created_by === auth()->id(), 403);
+    }
+
+    private function track(): string
+    {
+        return ExamTrack::current();
+    }
+
+    public function index(Request $request)
+    {
+        $filters = $request->validate(['part' => 'nullable|integer|between:1,7', 'subject_id' => 'nullable|integer', 'skill' => 'nullable|in:listening,reading,writing,speaking', 'search' => 'nullable|string|max:255']);
+
+        return Inertia::render('Questions', [
+            'questions' => Question::where('exam_track', $this->track())->when($filters['part'] ?? null, fn ($q, $v) => $q->where('part', $v))->when($filters['subject_id'] ?? null, fn ($q, $v) => $q->where('subject_id', $v))->when($filters['skill'] ?? null, fn ($q, $v) => $q->where('skill', $v))->when($filters['search'] ?? null, fn ($q, $v) => $q->where('content', 'like', '%'.$v.'%'))->latest()->paginate(15)->withQueryString(),
+            'groups' => QuestionGroup::where('exam_track', $this->track())->latest()->get(), 'subjects' => ExamTrack::current() === 'course' ? Subject::where('is_active', true)->orderBy('name')->get() : [], 'filters' => $filters,
+        ]);
+    }
+
+    private function data(Request $request): array
+    {
+        $track = $this->track();
+        $rules = ['part' => 'required|integer|between:1,7', 'question_group_id' => ['nullable', 'integer', Rule::exists('question_groups', 'id')->where('exam_track', $track)], 'content' => 'required|string|max:10000', 'kind' => ['sometimes', Rule::in($track === 'toeic' ? ['mcq'] : ['mcq', 'essay', 'speaking'])], 'skill' => [$track === 'vstep' ? 'required' : 'nullable', Rule::in(['listening', 'reading', 'writing', 'speaking'])], 'max_points' => 'sometimes|numeric|between:0.1,100', 'difficulty' => 'required|in:easy,medium,hard', 'explanation' => 'nullable|string|max:20000', 'subject_id' => [$track === 'course' ? 'required' : 'nullable', Rule::exists('subjects', 'id')->where('is_active', true)]];
+        $kind = $request->input('kind', 'mcq');
+        if ($kind === 'mcq') {
+            $rules += ['options' => 'required|array:A,B,C,D', 'options.A' => 'required|string|max:10000', 'options.B' => 'required|string|max:10000', 'options.C' => 'nullable|string|max:10000', 'options.D' => 'nullable|string|max:10000', 'correct_option' => 'required|in:A,B,C,D'];
+        }
+        $data = $request->validate($rules);
+        $data['kind'] = $kind;
+        $data['max_points'] = $data['max_points'] ?? 1;
+        if ($track !== 'course') {
+            $data['subject_id'] = null;
+        }
+        if ($track !== 'vstep') {
+            $data['skill'] = null;
+        }
+        if ($kind === 'mcq' && ! filled($data['options'][$data['correct_option']] ?? null)) {
+            throw ValidationException::withMessages(['correct_option' => 'Đáp án đúng phải có nội dung.']);
+        }
+        if ($kind !== 'mcq') {
+            $data['options'] = [];
+            $data['correct_option'] = '';
+        }
+        if ($track === 'vstep' && (($data['skill'] === 'speaking' && $kind !== 'speaking') || ($data['skill'] === 'writing' && $kind !== 'essay') || (in_array($data['skill'], ['listening', 'reading']) && $kind !== 'mcq'))) {
+            throw ValidationException::withMessages(['kind' => 'Nghe/đọc dùng trắc nghiệm, viết dùng tự luận, nói dùng bài ghi âm.']);
+        }
+        if (! empty($data['question_group_id'])) {
+            $group = QuestionGroup::findOrFail($data['question_group_id']);
+            if ($track === 'toeic' && $group->part !== (int) $data['part']) {
+                throw ValidationException::withMessages(['question_group_id' => 'Nhóm tư liệu không cùng Part.']);
+            } if ($track === 'course' && $group->subject_id !== (int) $data['subject_id']) {
+                throw ValidationException::withMessages(['question_group_id' => 'Nhóm tư liệu không cùng môn học.']);
+            }
+        }
+        if ($track === 'toeic' && in_array((int) $data['part'], [3, 4, 6, 7], true) && empty($data['question_group_id'])) {
+            throw ValidationException::withMessages(['question_group_id' => 'Part này cần gắn nhóm tư liệu.']);
+        }
+
+        return $data;
+    }
+
+    public function store(Request $request)
+    {
+        Question::create($this->data($request) + ['exam_track' => $this->track(), 'created_by' => auth()->id(), 'status' => 'draft']);
+
+        return back()->with('success', 'Đã thêm câu hỏi.');
+    }
+
+    public function update(Request $request, Question $question)
+    {
+        $this->owner($question);
+        if ($question->exams()->exists()) {
+            return back()->withErrors(['question' => 'Câu hỏi đã gắn vào đề. Tạo câu hỏi mới để giữ nội dung đề hiện có.']);
+        }$question->update($this->data($request));
+
+        return back()->with('success', 'Đã cập nhật câu hỏi.');
+    }
+
+    public function destroy(Question $question)
+    {
+        $this->owner($question);
+        if ($question->exams()->exists()) {
+            return back()->withErrors(['delete' => 'Câu hỏi đã dùng trong đề, không thể xóa.']);
+        }$question->delete();
+
+        return back()->with('success', 'Đã xóa câu hỏi.');
+    }
+
+    private function groupData(Request $request): array
+    {
+        $data = $request->validate(['part' => 'required|integer|between:1,7', 'title' => 'required|string|max:255', 'passage' => 'nullable|string|max:60000', 'media_path' => 'nullable|string|max:500', 'subject_id' => [$this->track() === 'course' ? 'required' : 'nullable', Rule::exists('subjects', 'id')->where('is_active', true)]]);
+        if ($this->track() !== 'course') {
+            $data['subject_id'] = null;
+        }
+
+return $data;
+    }
+
+    public function storeGroup(Request $request)
+    {
+        QuestionGroup::create($this->groupData($request) + ['exam_track' => $this->track(), 'created_by' => auth()->id()]);
+
+        return back()->with('success', 'Đã thêm nhóm tư liệu.');
+    }
+
+    public function updateGroup(Request $request, QuestionGroup $questionGroup)
+    {
+        $this->owner($questionGroup);
+        if ($questionGroup->questions()->exists()) {
+            return back()->withErrors(['group' => 'Nhóm đã có câu hỏi. Tạo nhóm mới để thay đổi tư liệu.']);
+        }$questionGroup->update($this->groupData($request));
+
+        return back()->with('success', 'Đã sửa nhóm tư liệu.');
+    }
+
+    public function destroyGroup(QuestionGroup $questionGroup)
+    {
+        $this->owner($questionGroup);
+        if ($questionGroup->questions()->exists()) {
+            return back()->withErrors(['delete' => 'Nhóm đã có câu hỏi, không thể xóa.']);
+        }$questionGroup->delete();
+
+        return back()->with('success','Đã xóa nhóm tư liệu.');
+    }
 }

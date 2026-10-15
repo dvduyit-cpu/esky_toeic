@@ -1,7 +1,19 @@
 <?php
+
 namespace App\Http\Controllers;
-use App\Models\{User,Question,Exam};
+
+use App\Models\Exam;
+use App\Models\Question;
+use App\Models\User;
+use App\Support\ExamTrack;
 use Inertia\Inertia;
-class DashboardController extends Controller {
- public function index(){ $user=auth()->user();return Inertia::render('Dashboard',['stats'=>$user->role==='admin'?['users'=>User::count(),'questions'=>Question::count(),'exams'=>Exam::count()]:['questions'=>$user->isStaff()?Question::where('created_by',$user->id)->count():0,'exams'=>$user->isStaff()?Exam::where('created_by',$user->id)->count():0]]); }
+
+class DashboardController extends Controller
+{
+    public function index()
+    {
+        $tracks = collect(ExamTrack::all())->filter(fn ($track) => auth()->user()->canManageTrack($track['slug']));
+
+        return Inertia::render('Dashboard', ['stats' => ['users' => User::whereIn('role', ['admin', 'teacher'])->count(), 'questions' => Question::whereIn('exam_track', $tracks->keys())->count(), 'exams' => Exam::whereIn('exam_track', $tracks->keys())->count()], 'moduleStats' => $tracks->map(fn ($track) => $track + ['questions' => Question::where('exam_track', $track['slug'])->count(), 'exams' => Exam::where('exam_track', $track['slug'])->count(), 'students' => User::where('role', 'student')->where('exam_track', $track['slug'])->count()])->values()]);
+    }
 }

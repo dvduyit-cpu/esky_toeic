@@ -1,5 +1,4 @@
-IMPORTANT: Laravel 13 needs middleware registration in bootstrap/app.php.
-Add inside withMiddleware callback:
+﻿Middleware is already registered in bootstrap/app.php:
 $middleware->web(append: [\App\Http\Middleware\ShareInertia::class]);
 $middleware->alias(['active.user' => \App\Http\Middleware\EnsureActiveUser::class]);
-You MUST do this before using the app. See scripts/install.ps1 for automatic patching.
+No manual bootstrap patch is required. See README.md for Laragon setup.
