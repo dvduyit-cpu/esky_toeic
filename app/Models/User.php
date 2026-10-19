@@ -28,4 +28,9 @@ class User extends Authenticatable
     {
         return in_array($this->role, ['admin', 'teacher'], true);
     }
+
+    public function examAccesses()
+    {
+        return $this->hasMany(ExamAccess::class)->latest('id');
+    }
 }

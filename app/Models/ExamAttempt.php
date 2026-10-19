@@ -21,6 +21,36 @@ class ExamAttempt extends Model
         return $this->belongsTo(ExamAccess::class, 'exam_access_id');
     }
 
+    public function getListeningResultAttribute(): ?array
+    {
+        return $this->sectionResult(1, 4, \App\Support\ToeicListeningScore::class);
+    }
+
+    public function getReadingResultAttribute(): ?array
+    {
+        return $this->sectionResult(5, 7, \App\Support\ToeicReadingScore::class);
+    }
+
+    public function getToeicTotalScoreAttribute(): ?int
+    {
+        $listening = $this->listening_result['scaled'] ?? null;
+        $reading = $this->reading_result['scaled'] ?? null;
+        return count($this->questions_snapshot ?? []) === 200 && $listening !== null && $reading !== null ? $listening + $reading : null;
+    }
+
+    private function sectionResult(int $firstPart, int $lastPart, string $conversion): ?array
+    {
+        if (!$this->submitted_at || $this->access->exam->exam_track !== 'toeic') return null;
+        $questions = collect($this->questions_snapshot)->filter(fn ($q) =>
+            isset($q['part']) && (int) $q['part'] >= $firstPart && (int) $q['part'] <= $lastPart && ($q['kind'] ?? 'mcq') === 'mcq');
+        if ($questions->isEmpty()) return null;
+        $correct = $questions->filter(fn ($q) => ($this->answers[$q['id']] ?? null) === $q['correct_option'])->count();
+        return [
+            'correct' => $correct, 'total' => $questions->count(),
+            'scaled' => $questions->count() === 100 ? $conversion::fromRaw($correct) : null,
+        ];
+    }
+
     public function finish(): void
     {
         if ($this->submitted_at) {

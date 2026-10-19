@@ -27,7 +27,7 @@ class ExamAccessController extends Controller
         $filters = $request->validate(['search' => 'nullable|string|max:255', 'date' => 'nullable|date_format:Y-m-d']);
 
         return Inertia::render('ExamAccesses', [
-            'accesses' => ExamAccess::whereHas('exam', fn ($query) => $query->where('exam_track', ExamTrack::current()))->with(['user:id,name,email,is_active', 'exam:id,title,status'])
+            'accesses' => ExamAccess::whereHas('exam', fn ($query) => $query->where('exam_track', ExamTrack::current()))->with(['user:id,name,email,is_active', 'exam:id,title,status', 'round:id,name'])
                 ->withCount('attempts')->with(['attempts' => fn ($query) => $query->select('id', 'exam_access_id', 'attempt_number', 'started_at', 'submitted_at', 'correct_count')->latest()])
                 ->when($filters['date'] ?? null, fn ($query, $date) => $query->whereDate('exam_date', $date))
                 ->when($filters['search'] ?? null, fn ($query, $search) => $query->whereHas('user', fn ($user) => $user->where(fn ($names) => $names->where('name', 'like', '%'.$search.'%')->orWhere('email', 'like', '%'.$search.'%'))))
@@ -70,9 +70,40 @@ class ExamAccessController extends Controller
     public function update(Request $request, ExamAccess $examAccess): RedirectResponse
     {
         $this->admin();
-        $data = $request->validate(['max_attempts' => 'required|integer|between:1,100', 'is_active' => 'required|boolean']);
+        $mode = $request->input('access_mode', $examAccess->access_mode);
+        if ($mode === 'session' && $examAccess->access_mode === 'session') {
+            $request->mergeIfMissing([
+                'session_name' => $examAccess->session_name,
+                'start_time' => substr($examAccess->start_time, 0, 5),
+                'end_time' => substr($examAccess->end_time, 0, 5),
+            ]);
+        }
+        $data = $request->validate([
+            'max_attempts' => 'required|integer|between:1,100',
+            'is_active' => 'required|boolean',
+            'exam_date' => ['sometimes', 'required', 'date_format:Y-m-d', Rule::when($request->input('exam_date', $examAccess->exam_date->toDateString()) !== $examAccess->exam_date->toDateString(), 'after_or_equal:'.now('Asia/Bangkok')->toDateString())],
+            'access_mode' => 'sometimes|required|in:day,session',
+            'session_name' => [Rule::excludeIf($mode !== 'session'), 'required', 'string', 'max:255'],
+            'start_time' => [Rule::excludeIf($mode !== 'session'), 'required', 'date_format:H:i'],
+            'end_time' => [Rule::excludeIf($mode !== 'session'), 'required', 'date_format:H:i', 'after:start_time'],
+        ]);
+        if ($mode === 'session') {
+            $data['start_time'] .= ':00';
+            $data['end_time'] .= ':00';
+        } else {
+            $data += ['session_name' => null, 'start_time' => null, 'end_time' => null];
+        }
         DB::transaction(function () use ($data, $examAccess) {
+            User::whereKey($examAccess->user_id)->lockForUpdate()->firstOrFail();
             $access = ExamAccess::whereKey($examAccess->id)->lockForUpdate()->firstOrFail();
+            $date = $data['exam_date'] ?? $access->exam_date->toDateString();
+            $mode = $data['access_mode'] ?? $access->access_mode;
+            $start = $data['start_time'] ?? $access->start_time;
+            if (ExamAccess::where('user_id', $access->user_id)->where('exam_id', $access->exam_id)
+                ->whereKeyNot($access->id)->whereDate('exam_date', $date)->where('access_mode', $mode)
+                ->when($mode === 'session', fn ($query) => $query->where('start_time', $start))->exists()) {
+                throw ValidationException::withMessages(['exam_date' => 'Đã có quyền thi cho đề này vào ngày hoặc ca đã chọn.']);
+            }
             if ($data['max_attempts'] < $access->attempts()->count()) {
                 throw ValidationException::withMessages(['max_attempts' => 'Tổng số lượt phải lớn hơn hoặc bằng số lượt đã sử dụng.']);
             }

@@ -18,7 +18,7 @@ class CandidateController extends Controller
 {
     public function index(): Response
     {
-        $accesses = ExamAccess::where('user_id', auth()->id())->whereHas('exam', fn ($q) => $q->where('exam_track', auth()->user()->exam_track))->with('exam:id,title,description,duration_minutes,status')->withCount('attempts')->latest('exam_date')->get();
+        $accesses = ExamAccess::where('user_id', auth()->id())->whereHas('exam', fn ($q) => $q->where('exam_track', auth()->user()->exam_track))->with(['exam:id,title,description,duration_minutes,status', 'round:id,name'])->withCount('attempts')->latest('exam_date')->get();
         $attempts = ExamAttempt::whereIn('exam_access_id', $accesses->pluck('id'))->latest()->get();
         foreach ($attempts as $attempt) {
             if (! $attempt->submitted_at && $attempt->expires_at->isPast()) {
@@ -31,7 +31,7 @@ class CandidateController extends Controller
 
         return Inertia::render('Candidate/Home', [
             'accesses' => $accesses->map(fn ($access) => $access->toArray() + ['opens_at' => $access->opensAt()->toIso8601String(), 'closes_at' => $access->closesAt()->toIso8601String()]),
-            'attempts' => $attempts->map(fn ($attempt) => $attempt->only(['id', 'exam_access_id', 'attempt_number', 'started_at', 'expires_at', 'submitted_at', 'correct_count', 'total_points', 'graded_at']) + ['total_questions' => count($attempt->questions_snapshot)]),
+            'attempts' => $attempts->map(fn ($attempt) => $attempt->only(['id', 'exam_access_id', 'attempt_number', 'started_at', 'expires_at', 'submitted_at', 'correct_count', 'total_points', 'graded_at', 'listening_result', 'reading_result', 'toeic_total_score']) + ['total_questions' => count($attempt->questions_snapshot)]),
             'today' => now('Asia/Bangkok')->toDateString(),
             'server_time' => now()->toIso8601String(),
         ]);
@@ -86,7 +86,7 @@ class CandidateController extends Controller
         }
 
         return Inertia::render('Candidate/Attempt', [
-            'attempt' => $examAttempt->only(['id', 'attempt_number', 'answers', 'started_at', 'expires_at', 'submitted_at', 'correct_count', 'total_points', 'graded_at']),
+            'attempt' => $examAttempt->only(['id', 'attempt_number', 'answers', 'started_at', 'expires_at', 'submitted_at', 'correct_count', 'total_points', 'graded_at', 'listening_result', 'reading_result', 'toeic_total_score']),
             'exam' => $examAttempt->access->exam->only(['title', 'duration_minutes']),
             'questions' => collect($examAttempt->questions_snapshot)->map(fn ($question) => collect($question)->except('correct_option')->all()),
             'server_time' => now()->toIso8601String(),

@@ -9,7 +9,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ExamAccess extends Model
 {
-    protected $fillable = ['user_id', 'exam_id', 'exam_date', 'access_mode', 'session_name', 'start_time', 'end_time', 'max_attempts', 'is_active', 'created_by'];
+    protected $fillable = ['user_id', 'exam_id', 'exam_date', 'access_mode', 'session_name', 'start_time', 'end_time', 'max_attempts', 'is_active', 'created_by', 'exam_round_id'];
+
+    public function round(): BelongsTo
+    {
+        return $this->belongsTo(ExamRound::class, 'exam_round_id');
+    }
 
     public function opensAt(): Carbon
     {

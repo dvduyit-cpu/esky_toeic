@@ -27,6 +27,9 @@ foreach (['toeic', 'vstep', 'course'] as $track) {
 $management = function () {
     Route::get('/users', [UserController::class, 'index']);
     Route::post('/users', [UserController::class, 'store']);
+    Route::get('/users/import-template', [UserController::class, 'importTemplate']);
+    Route::post('/users/import', [UserController::class, 'import']);
+    Route::post('/exam-rounds', [UserController::class, 'storeRound']);
     Route::put('/users/{user}', [UserController::class, 'update']);
     Route::delete('/users/{user}', [UserController::class, 'destroy']);
     Route::get('/exam-accesses', [ExamAccessController::class, 'index']);
@@ -48,6 +51,7 @@ $management = function () {
     Route::delete('/exams/{exam}/questions/{question}', [ExamController::class, 'detach']);
     Route::put('/exams/{exam}/status', [ExamController::class, 'status']);
     Route::get('/results', [ResultController::class, 'index']);
+    Route::get('/results/export', [ResultController::class, 'export']);
     Route::put('/results/{examAttempt}', [ResultController::class, 'grade']);
     Route::get('/results/{examAttempt}/recordings/{questionId}', [ResultController::class, 'recording']);
 };

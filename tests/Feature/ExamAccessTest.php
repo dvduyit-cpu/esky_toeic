@@ -93,6 +93,43 @@ class ExamAccessTest extends TestCase
         $this->actingAs($this->admin)->put('/exam-accesses/'.$access->id, ['max_attempts' => 1, 'is_active' => true])->assertSessionHasErrors('max_attempts');
     }
 
+    public function test_admin_can_reschedule_and_allow_a_retake_without_changing_old_results(): void
+    {
+        $access = $this->grant();
+        $this->actingAs($this->student)->post('/exam/accesses/'.$access->id.'/start');
+        $attempt = $access->attempts()->firstOrFail();
+        $this->post('/exam/attempts/'.$attempt->id.'/submit', ['answers' => [$this->question->id => 'A']]);
+        $this->actingAs($this->admin)->put('/exam-accesses/'.$access->id, [
+            'exam_date' => '2026-10-16', 'max_attempts' => 2, 'is_active' => true,
+        ])->assertSessionHasNoErrors();
+        $this->assertSame('2026-10-16', $access->fresh()->exam_date->toDateString());
+        $this->assertSame(1, $attempt->fresh()->correct_count);
+        $this->assertNotNull($attempt->fresh()->submitted_at);
+        $this->actingAs($this->student)->post('/exam/accesses/'.$access->id.'/start')->assertSessionHasErrors('access');
+        $this->travel(1)->days();
+        $this->post('/exam/accesses/'.$access->id.'/start')->assertSessionHasNoErrors();
+        $this->assertSame(2, $access->attempts()->count());
+        $this->assertSame(2, $access->attempts()->latest('id')->first()->attempt_number);
+    }
+
+    public function test_rescheduling_rejects_past_dates_duplicates_invalid_sessions_and_non_admins(): void
+    {
+        $access = $this->grant();
+        $payload = ['exam_date' => '2026-10-16', 'max_attempts' => 2, 'is_active' => true];
+        $this->actingAs($this->student)->put('/exam-accesses/'.$access->id, $payload)->assertForbidden();
+        $teacher = User::factory()->create(['role' => 'teacher']);
+        $this->actingAs($teacher)->put('/exam-accesses/'.$access->id, $payload)->assertForbidden();
+        $this->actingAs($this->admin)->put('/exam-accesses/'.$access->id, array_replace($payload, ['exam_date' => '2026-10-14']))->assertSessionHasErrors('exam_date');
+        $this->grant(['exam_date' => '2026-10-16']);
+        $this->put('/exam-accesses/'.$access->id, $payload)->assertSessionHasErrors('exam_date');
+        $session = $payload + ['access_mode' => 'session', 'session_name' => 'Ca chiều', 'start_time' => '14:00', 'end_time' => '13:00'];
+        $this->put('/exam-accesses/'.$access->id, $session)->assertSessionHasErrors('end_time');
+        $this->put('/exam-accesses/'.$access->id, array_replace($session, ['end_time' => '16:00']))->assertSessionHasNoErrors();
+        $this->assertSame('14:00:00', $access->fresh()->start_time);
+        $this->assertSame('session', $access->fresh()->access_mode);
+        $this->assertSame('2026-10-16', $access->fresh()->exam_date->toDateString());
+    }
+
     public function test_student_cannot_use_other_accounts_or_access_answer_keys(): void
     {
         $access = $this->grant();

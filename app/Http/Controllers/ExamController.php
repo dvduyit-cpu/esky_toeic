@@ -98,7 +98,7 @@ return $data;
     public function destroy(Exam $exam)
     {
         $this->owner($exam);
-        if (ExamAccess::where('exam_id', $exam->id)->exists() || $exam->status === 'published') {
+        if (ExamAccess::where('exam_id', $exam->id)->exists() || \App\Models\ExamRound::where('exam_id', $exam->id)->exists() || $exam->status === 'published') {
             return back()->withErrors(['delete' => 'Đề đã mở hoặc có quyền thi, không thể xóa. Hãy đóng đề để ngừng sử dụng.']);
         }$exam->questions()->detach();
         $exam->delete();

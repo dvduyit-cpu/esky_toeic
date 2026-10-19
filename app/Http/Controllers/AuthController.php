@@ -33,8 +33,8 @@ return Inertia::render('Portals');
 
     public function login(Request $request): RedirectResponse
     {
-        $data = $request->validate(['email' => 'required|email', 'password' => 'required|string']);
         $admin = $request->is('admin/*');
+        $data = $request->validate(['email' => $admin ? 'required|email|max:255' : 'required|string|max:255', 'password' => 'required|string']);
         $track = ExamTrack::current();
         $key = 'login:'.($admin ? 'staff' : $track).':'.strtolower($data['email']).'|'.$request->ip();
         if (RateLimiter::tooManyAttempts($key, 5)) {

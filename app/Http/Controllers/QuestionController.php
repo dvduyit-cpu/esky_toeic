@@ -25,10 +25,21 @@ class QuestionController extends Controller
 
     public function index(Request $request)
     {
-        $filters = $request->validate(['part' => 'nullable|integer|between:1,7', 'subject_id' => 'nullable|integer', 'skill' => 'nullable|in:listening,reading,writing,speaking', 'search' => 'nullable|string|max:255']);
+        $filters = $request->validate(['section' => 'nullable|in:listening,reading', 'part' => 'nullable|integer|between:1,7', 'subject_id' => 'nullable|integer', 'skill' => 'nullable|in:listening,reading,writing,speaking', 'search' => 'nullable|string|max:255']);
+        $counts = [];
+        if ($this->track() === 'toeic') {
+            $counts = [
+                'listening' => Question::where('exam_track', 'toeic')->whereBetween('part', [1, 4])->count(),
+                'reading' => Question::where('exam_track', 'toeic')->whereBetween('part', [5, 7])->count(),
+            ];
+            $filters['section'] = $filters['section'] ?? (!empty($filters['part']) ? ((int) $filters['part'] <= 4 ? 'listening' : 'reading') : ($counts['listening'] ? 'listening' : 'reading'));
+            if (!empty($filters['part']) && ($filters['section'] === 'listening') !== ((int) $filters['part'] <= 4)) unset($filters['part']);
+            unset($filters['skill']);
+        }
 
         return Inertia::render('Questions', [
-            'questions' => Question::where('exam_track', $this->track())->when($filters['part'] ?? null, fn ($q, $v) => $q->where('part', $v))->when($filters['subject_id'] ?? null, fn ($q, $v) => $q->where('subject_id', $v))->when($filters['skill'] ?? null, fn ($q, $v) => $q->where('skill', $v))->when($filters['search'] ?? null, fn ($q, $v) => $q->where('content', 'like', '%'.$v.'%'))->latest()->paginate(15)->withQueryString(),
+            'questions' => Question::where('exam_track', $this->track())->when($this->track() === 'toeic', fn ($q) => $q->whereBetween('part', $filters['section'] === 'listening' ? [1, 4] : [5, 7]))->when($filters['part'] ?? null, fn ($q, $v) => $q->where('part', $v))->when($filters['subject_id'] ?? null, fn ($q, $v) => $q->where('subject_id', $v))->when($filters['skill'] ?? null, fn ($q, $v) => $q->where('skill', $v))->when($filters['search'] ?? null, fn ($q, $v) => $q->where('content', 'like', '%'.$v.'%'))->latest()->paginate(15)->withQueryString(),
+            'section_counts' => $counts,
             'groups' => QuestionGroup::where('exam_track', $this->track())->latest()->get(), 'subjects' => ExamTrack::current() === 'course' ? Subject::where('is_active', true)->orderBy('name')->get() : [], 'filters' => $filters,
         ]);
     }
