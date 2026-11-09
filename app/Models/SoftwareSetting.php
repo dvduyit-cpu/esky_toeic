@@ -20,7 +20,7 @@ class SoftwareSetting extends Model
             'footer_text' => 'E-SKY EXAM · Nền tảng khảo thí', 'footer_note' => 'TOEIC · VSTEP · Thi kết thúc môn',
             'login_heading' => "Mỗi ngày học.\nMột bước tiến.\nCùng chinh phục mục tiêu.",
             'login_description' => 'Không gian chung để quản lý học liệu, xây dựng ngân hàng câu hỏi và chuẩn bị cho những kỳ thi.',
-            'support_email' => '', 'primary_color' => '#2563eb', 'font_family' => 'system', 'font_size' => 15, 'corner_radius' => 10, 'logo_path' => null,
+            'support_email' => '', 'primary_color' => '#2563eb', 'background_color' => '#E5EAF0', 'menu_color' => '#E0E7EF', 'font_family' => 'system', 'font_size' => 15, 'corner_radius' => 10, 'logo_path' => null,
         ];
     }
 
@@ -42,6 +42,19 @@ class SoftwareSetting extends Model
         $data['on_primary'] = $luminance > 0.179 ? '#111827' : '#ffffff';
         $data['accent_color'] = $luminance > 0.179 ? sprintf('#%02x%02x%02x', ...array_map(fn ($v) => (int) round($v * 255 * 0.55), $rgb)) : $data['primary_color'];
 
+        $background = array_map(fn ($channel) => hexdec($channel) / 255, str_split(ltrim($data['background_color'], '#'), 2));
+        $linearBackground = array_map(fn ($v) => $v <= 0.04045 ? $v / 12.92 : (($v + 0.055) / 1.055) ** 2.4, $background);
+        $dark = $linearBackground[0] * 0.2126 + $linearBackground[1] * 0.7152 + $linearBackground[2] * 0.0722 < 0.179;
+        $data['background_ink'] = $dark ? '#f5f8fc' : '#20354B';
+        $data['background_muted'] = $dark ? '#e3edf7' : '#4C6278';
+        $data['background_surface'] = $dark ? '#27394e' : '#F9FAFB';
+        $data['background_border'] = $dark ? '#8ca3bb' : '#889DB2';
+        $data['background_scheme'] = $dark ? 'dark' : 'light';
+        $menu = array_map(fn ($channel) => hexdec($channel) / 255, str_split(ltrim($data['menu_color'], '#'), 2));
+        $menuLinear = array_map(fn ($v) => $v <= 0.04045 ? $v / 12.92 : (($v + 0.055) / 1.055) ** 2.4, $menu);
+        $menuDark = $menuLinear[0] * 0.2126 + $menuLinear[1] * 0.7152 + $menuLinear[2] * 0.0722 < 0.179;
+        $data['menu_ink'] = $menuDark ? '#f5f8fc' : '#20354B';
+        $data['menu_muted'] = $menuDark ? '#e3edf7' : '#4C6278';
         return $data;
     }
 }

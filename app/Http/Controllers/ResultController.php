@@ -91,6 +91,19 @@ class ResultController extends Controller
         return back()->with('success', 'Đã lưu điểm chấm bài.');
     }
 
+    public function pdf(Request $request, ExamAttempt $examAttempt)
+    {
+        $this->owner($examAttempt);
+        abort_unless($examAttempt->submitted_at, 422, 'Chỉ xuất PDF khi thí sinh đã nộp bài.');
+        $examAttempt->loadMissing('access.user', 'access.exam', 'access.round');
+        $filename = 'bai-lam-'.$examAttempt->id.'.pdf';
+        return response(\App\Support\AttemptPdf::render($examAttempt), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => ($request->boolean('download') ? 'attachment' : 'inline').'; filename="'.$filename.'"',
+            'Cache-Control' => 'private, no-store, max-age=0',
+            'X-Content-Type-Options' => 'nosniff',
+        ]);
+    }
     public function recording(ExamAttempt $examAttempt, string $questionId)
     {
         $this->owner($examAttempt);

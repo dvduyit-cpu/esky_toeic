@@ -8,7 +8,6 @@ import RecordingAnswer from '../../Components/RecordingAnswer.vue';
 import CandidateLayout from '../../Layouts/CandidateLayout.vue';
 import ExamGuard from '../../Components/ExamGuard.vue';
 import BrandIdentity from '../../Components/BrandIdentity.vue';
-import ToeicScoreSummary from '../../Components/ToeicScoreSummary.vue';
 const props = defineProps({ attempt: Object, exam: Object, questions: Array, server_time: String });
 const {context,candidateBase,page}=useExamContext(); const submitOpen=ref(false),recordingBusy=ref({}); const hasPendingRecording=computed(()=>Object.values(recordingBusy.value).some(Boolean));
 const examHeader = ref(null);
@@ -90,7 +89,7 @@ onMounted(() => { window.addEventListener('beforeunload', warnIfUnsaved); timer 
 onUnmounted(() => { if (saveStatus.value === 'Chờ lưu…' && !props.attempt.submitted_at) save(); clearInterval(timer); clearTimeout(debounce); window.removeEventListener('beforeunload', warnIfUnsaved); });
 </script>
 <template><Head :title="exam.title" /><CandidateLayout>
- <template v-if="attempt.submitted_at"><div class="card result-card"><span class="result-icon">✓</span><div class="eyebrow">LƯỢT THI ĐÃ KẾT THÚC</div><h1>{{ exam.title }}</h1><p class="muted">Lượt thi số {{ attempt.attempt_number }}</p><ToeicScoreSummary :listening="attempt.listening_result" :reading="attempt.reading_result" :total="attempt.toeic_total_score"/><div v-if="attempt.graded_at && attempt.toeic_total_score==null" class="result-score">{{ attempt.total_points }} <span>{{attempt.listening_result||attempt.reading_result?'điểm theo câu':'điểm'}}</span></div><h2 v-else class="section-gap">Đã nộp · Chờ giáo viên chấm</h2><p class="muted">Trắc nghiệm: {{attempt.correct_count}} câu đúng. {{attempt.listening_result||attempt.reading_result?'Tổng TOEIC chỉ hiển thị khi đề có đủ 100 câu Listening và 100 câu Reading.':'Điểm hiển thị theo cấu hình từng câu.'}}</p><Link :href="candidateBase" class="btn">Về danh sách bài thi</Link></div></template>
+ <template v-if="attempt.submitted_at"><div class="card result-card submission-receipt"><span class="result-icon">✓</span><div class="eyebrow">ĐÃ NỘP BÀI THÀNH CÔNG</div><h1>{{ exam.title }}</h1><p class="muted">Lượt thi số {{ attempt.attempt_number }}</p><p>Bài làm của bạn đã được ghi nhận. Kết quả do quản trị viên quản lý và thông báo.</p><Link :href="candidateBase" class="btn">Về danh sách bài thi</Link></div></template>
  <template v-else><ExamGuard :submit-error="error" @violation="submit(false)" :submitting="sending" :submit-url="candidateBase+'/attempts/'+attempt.id+'/submit'" @submit="submit(true)"><div class="exam-workspace" :style="{'--exam-header-height':headerHeight+'px','--exam-parts-height':partsHeight+'px'}">
   <header ref="examHeader" class="attempt-toolbar exam-fixed-header" aria-label="Thông tin thí sinh và bài thi">
    <div class="exam-candidate-name"><span>Họ và tên</span><strong>{{page.props.auth.user.name}}</strong></div>

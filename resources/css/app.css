@@ -122,3 +122,399 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,.sidebar::-webkit-scrollbar,.app
 .exam-workspace .reading-passage-body{max-height:calc(100dvh - var(--exam-header-height,100px) - var(--exam-parts-height) - 85px)}
 .exam-workspace .exam-nav-parts{max-height:calc(100dvh - var(--exam-header-height,100px) - var(--exam-parts-height) - 260px)}
 @media(max-width:760px){.exam-workspace .reading-passage-body{max-height:none}}
+
+/* Saved appearance color drives every dark surface and accent. */
+:root{--theme-color:#365f8b;--theme-on-primary:#fff;--theme-bg:color-mix(in srgb,var(--theme-color) 20%,#0c1726);--theme-bg-raised:color-mix(in srgb,var(--theme-color) 28%,#101d2b);--theme-surface:color-mix(in srgb,var(--theme-color) 34%,#182839);--theme-soft:color-mix(in srgb,var(--theme-color) 40%,#203247);--theme-soft-raised:color-mix(in srgb,var(--theme-color) 45%,#2a4057);--theme-input:color-mix(in srgb,var(--theme-color) 22%,#102032);--theme-border:color-mix(in srgb,var(--theme-color) 40%,#687b91);--theme-border-strong:color-mix(in srgb,var(--theme-color) 30%,#a3b5c8);--theme-accent:color-mix(in srgb,var(--theme-color) 20%,#f0f7ff);--theme-hover:color-mix(in srgb,var(--theme-color) 80%,#243a52)}
+/* Navy public portal: muted surfaces and readable text without white glare. */
+.student-welcome,.auth-shell{--primary:var(--theme-color, #365f8b);--on-primary:var(--theme-ink);--accent:var(--theme-accent);--soft:var(--theme-soft);--ink:var(--theme-ink);--muted:var(--theme-muted);--line:var(--theme-border);color:var(--ink);background:var(--theme-bg)}
+.student-welcome{background:linear-gradient(145deg,var(--theme-bg),var(--theme-bg-raised))}
+.welcome-ambient{display:none}
+.student-welcome .brand strong,.auth-shell .brand strong{color:var(--theme-ink)}
+.student-welcome .brand small,.auth-shell .brand small{color:var(--theme-muted)}
+.student-welcome .brand-mark,.auth-shell .brand-mark{background:var(--theme-color, #365f8b);box-shadow:none}
+.student-public-links{color:var(--theme-muted)}
+.student-public-links .staff-entry{background:var(--theme-surface);border-color:var(--theme-border)}
+.student-public-links a:hover{color:var(--theme-ink)}
+.student-hero h1,.student-section-heading h2,.student-module-card h3{color:var(--theme-ink)}
+.student-hero h1>span,.welcome-kicker,.welcome-trust svg{color:var(--theme-accent)}
+.student-hero-copy>p,.welcome-trust,.student-section-heading>span,.student-section-heading .eyebrow{color:var(--theme-muted)}
+.student-main-cta{background:var(--theme-color, #365f8b);color:var(--theme-ink);border:1px solid var(--theme-border-strong);box-shadow:0 6px 20px #08142240}
+.student-main-cta:hover{background:var(--theme-hover);box-shadow:0 10px 24px #08142260}
+.welcome-live-dot{background:var(--theme-accent);box-shadow:0 0 0 5px #a5c4e51a}
+.hero-orbit{border-color:var(--theme-border)}.hero-art-dots{background-image:radial-gradient(var(--theme-border-strong) 1.5px,transparent 1.5px)}
+.exam-preview-ticket{background:linear-gradient(145deg,var(--theme-soft),var(--theme-surface));border-color:var(--theme-border);box-shadow:0 20px 60px #08142255}
+.ticket-top,.ticket-footer,.exam-preview-ticket>p{color:var(--theme-muted)}
+.exam-preview-ticket>strong{color:var(--theme-ink)}
+.ticket-top>svg:last-child{color:var(--theme-accent)}
+.ticket-emblem{background:var(--theme-soft-raised);color:var(--theme-ink);box-shadow:0 0 0 9px #314c6740}
+.ticket-mini-logo{background:var(--theme-soft-raised);color:var(--theme-ink)}
+.ticket-progress i{background:#405b77}.ticket-progress i:first-child{background:var(--theme-accent)}.ticket-progress i:nth-child(2){background:#7899b9}
+.hero-floating-label{background:var(--theme-surface);border-color:var(--theme-border);box-shadow:0 9px 30px #08142240}
+.hero-floating-label strong{color:var(--theme-ink)}.hero-floating-label small{color:var(--theme-muted)}
+.hero-floating-label>span,.floating-bottom>span{background:var(--theme-soft-raised);color:var(--theme-ink)}.floating-bottom>svg{color:#9acbbb}
+.student-module-card{background:var(--theme-surface);border-color:var(--theme-border);box-shadow:0 5px 20px #08142230}
+.student-module-card:before{background:var(--theme-accent)}
+.student-module-card:hover,.student-module-card:focus-visible{border-color:var(--theme-accent);background:var(--theme-soft);box-shadow:0 17px 40px #08142255}
+.module-symbol,.module-vstep .module-symbol,.module-course .module-symbol{background:var(--theme-soft-raised);color:var(--theme-ink)}
+.module-number{color:var(--theme-muted)}.module-eyebrow,.student-module-card>p,.student-module-card>small{color:var(--theme-muted)}
+.module-tags span{background:var(--theme-input);border-color:var(--theme-border);color:var(--theme-ink)}
+.module-card-action{border-color:var(--theme-border);color:var(--theme-link)}
+.module-action-icon{background:var(--theme-soft-raised)}.student-module-card:hover .module-action-icon{background:var(--theme-hover)}
+.student-start-guide{background:var(--theme-bg-raised);border-color:var(--theme-border)}
+.student-start-guide>div>span{background:var(--theme-soft-raised);border-color:var(--theme-border-strong);color:var(--theme-muted)}
+.student-start-guide strong{color:var(--theme-ink)}.student-start-guide small,.student-start-guide>div>svg{color:var(--theme-muted)}
+.student-public-footer{border-color:var(--theme-border);color:var(--theme-muted)}
+.auth-shell .auth-story,.student-auth .auth-story{background:linear-gradient(145deg,var(--theme-bg-raised),var(--theme-surface));border-color:var(--theme-border)}
+.auth-shell .auth-story:after,.login-ambient i{border-color:var(--theme-border)}.login-ambient span{background:var(--theme-soft-raised);opacity:.3}
+.auth-shell .auth-story h1,.auth-shell .auth-entry h2{color:var(--theme-ink)}
+.auth-shell .auth-story-copy p,.auth-shell .auth-organization,.auth-shell .auth-entry .muted,.auth-shell .auth-support,.auth-shell .student-login-back{color:var(--theme-muted)}
+.auth-shell .auth-story-copy .eyebrow,.auth-shell .eyebrow{color:var(--theme-accent)}
+.auth-shell .auth-steps{color:var(--theme-ink)}.auth-shell .auth-steps span{background:var(--theme-soft);border-color:var(--theme-border)}
+.student-auth .auth-entry,.auth-shell .auth-entry{background:var(--theme-bg)}
+.student-auth .auth-form-wrap,.auth-shell .auth-form-wrap{background:var(--theme-surface);border:1px solid var(--theme-border);border-radius:20px;padding:32px;box-shadow:0 14px 50px #08142240}
+.student-login-module,.auth-shell .portal-label{background:var(--theme-soft-raised);border-color:var(--theme-border-strong);color:var(--theme-ink)}
+.auth-shell .field label{color:var(--theme-ink)}
+.auth-shell .field input{background:var(--theme-input);border-color:var(--theme-border);color:var(--theme-ink);color-scheme:dark}
+.auth-shell .field input::placeholder{color:var(--theme-muted)}
+.auth-shell .field input:focus{border-color:var(--theme-accent);outline-color:var(--theme-accent)}
+.auth-shell .password-toggle,.auth-shell .portal-switch{color:var(--theme-link)}
+.auth-shell .auth-submit{background:var(--theme-color, #365f8b);color:var(--theme-ink);border:1px solid var(--theme-border-strong)}
+.auth-shell .auth-submit:hover{background:var(--theme-hover)}
+.auth-shell .error{color:#ffc2c2}
+body:has(.auth-shell){background:var(--theme-bg)}.auth-shell~.login-footer{background:var(--theme-bg);color:var(--theme-muted);border-color:var(--theme-border)}
+.student-welcome :focus-visible,.auth-shell :focus-visible{outline:3px solid var(--theme-accent);outline-offset:4px}
+@media(max-width:600px){.student-auth .auth-form-wrap,.auth-shell .auth-form-wrap{padding:25px 22px}}
+/* Administration uses the same navy surfaces as the public portal. */
+body:has(.shell){--primary:var(--theme-color, #365f8b);--on-primary:var(--theme-ink);--accent:var(--theme-accent);--soft:var(--theme-soft);--ink:var(--theme-ink);--muted:var(--theme-muted);--line:var(--theme-border);--bg:var(--theme-bg);--focus-ring:color-mix(in srgb,var(--theme-color) 35%,transparent);background:var(--bg);color:var(--ink);color-scheme:dark}
+.shell{min-height:100vh;background:var(--theme-bg);color:var(--theme-ink)}
+.shell .sidebar{background:var(--theme-bg-raised);border-color:var(--theme-border);color:var(--theme-ink)}
+.shell .sidebar .brand,.shell .sidebar-bottom{border-color:var(--theme-border)}
+.shell .sidebar .brand strong,.shell .topbar-heading>strong,.shell .topbar .profile-name strong{color:var(--theme-ink)}
+.shell .sidebar .brand small,.shell .sidebar-bottom>small,.shell .sidebar .nav-group-toggle{color:var(--theme-muted)}
+.shell .sidebar .brand-mark{background:var(--theme-color, #365f8b);color:var(--theme-ink)}
+.shell .sidebar .nav-link{color:var(--theme-muted)}
+.shell .sidebar .nav-link:hover,.shell .sidebar .nav-group-toggle:hover{background:var(--theme-soft);color:var(--theme-ink)}
+.shell .sidebar .nav-link.active{background:var(--theme-color, #365f8b);color:var(--theme-ink);box-shadow:inset 3px 0 var(--theme-accent)}
+.shell .sidebar .nav-link.active:after{background:var(--theme-accent)}
+.shell .topbar{background:var(--theme-surface);border-color:var(--theme-border);color:var(--theme-ink);box-shadow:0 2px 10px #08142230}
+.shell .topbar .header-breadcrumb,.shell .topbar .today,.shell .topbar .profile-name small,.shell .topbar .profile-menu summary{color:var(--theme-muted)}
+.shell .topbar .icon-button,.shell .topbar .avatar{background:var(--theme-soft);color:var(--theme-ink)}
+.shell .topbar .icon-button:hover{background:var(--theme-soft-raised);color:var(--theme-ink)}
+.shell .profile-dropdown{background:var(--theme-surface);border-color:var(--theme-border);box-shadow:0 8px 28px #08142260}
+.shell .profile-dropdown button:hover{background:var(--theme-soft-raised)}
+.shell .card{background:var(--theme-surface);border-color:var(--theme-border);box-shadow:0 3px 12px #08142225}
+.shell .card>h2,.shell .metric-bottom,.shell .page-footer{border-color:var(--theme-border)}
+.shell .eyebrow,.shell .page-footer{color:var(--theme-muted)}
+.shell .help-card{background:var(--theme-soft);border-color:var(--theme-border)}
+:is(.shell,body:has(.shell) .app-modal) .secondary{background:var(--theme-soft);border-color:var(--theme-border-strong);color:var(--theme-ink);box-shadow:none}
+:is(.shell,body:has(.shell) .app-modal) .secondary:hover{background:var(--theme-soft-raised)}
+:is(.shell,body:has(.shell) .app-modal) :is(input,select,textarea){background:var(--theme-input);border-color:var(--theme-border);color:var(--theme-ink);color-scheme:dark;accent-color:var(--theme-accent)}
+:is(.shell,body:has(.shell) .app-modal) :is(input,textarea)::placeholder{color:var(--theme-muted)}
+:is(.shell,body:has(.shell) .app-modal) label{color:var(--theme-ink)}
+:is(.shell,body:has(.shell) .app-modal) :is(input,select,textarea):focus{border-color:var(--theme-accent)}
+:is(.shell,body:has(.shell) .app-modal) .tablewrap{background:var(--theme-surface);border-color:var(--theme-border)}
+:is(.shell,body:has(.shell) .app-modal) th{background:var(--theme-bg-raised);color:var(--theme-muted);border-color:var(--theme-border)}
+:is(.shell,body:has(.shell) .app-modal) td{color:var(--theme-ink);border-color:var(--theme-border)}
+:is(.shell,body:has(.shell) .app-modal) td:first-child{color:var(--theme-ink)}
+:is(.shell,body:has(.shell) .app-modal) tbody tr:hover{background:var(--theme-soft)}
+:is(.shell,body:has(.shell) .app-modal) :is(.pill,.module-badge,.blue,.avatar){background:var(--theme-soft-raised);color:var(--theme-ink)}
+:is(.shell,body:has(.shell) .app-modal) .pill.inactive{background:var(--theme-soft);color:var(--theme-muted)}
+:is(.shell,body:has(.shell) .app-modal) .green{background:#254e49;color:#b4ecda}
+:is(.shell,body:has(.shell) .app-modal) .orange{background:#57462f;color:#f6d6a4}
+:is(.shell,body:has(.shell) .app-modal) .notice:not(.success):not(.error-notice){background:var(--theme-soft);border-color:var(--theme-border);color:var(--theme-ink)}
+:is(.shell,body:has(.shell) .app-modal) .notice.success{background:#254e49;border-color:#508374;color:#c1f0de}
+:is(.shell,body:has(.shell) .app-modal) .error-notice{background:#552e3b;border-color:#a56376;color:#ffd5df}
+:is(.shell,body:has(.shell) .app-modal) .error{color:#ffc2c2}
+:is(.shell,body:has(.shell) .app-modal) .danger{background:#9b354b;color:#fff4f6}
+.shell .question-bank-tabs button{background:var(--theme-surface);border-color:var(--theme-border);color:var(--theme-ink)}
+.shell .question-bank-tabs button.active{background:var(--theme-soft-raised);border-color:var(--theme-accent);color:var(--theme-ink);box-shadow:inset 4px 0 var(--theme-accent)}
+.shell .question-bank-tabs small{color:var(--theme-muted)}.shell .question-bank-tabs b{background:var(--theme-bg-raised);color:var(--theme-ink)}.shell .question-bank-tabs .active b{background:var(--theme-hover);color:var(--theme-ink)}
+.shell .portal-card:hover,.shell .metric-card[href]:hover{border-color:var(--theme-accent);box-shadow:0 8px 25px #08142240}
+body:has(.shell) .app-modal{background:var(--theme-surface);color:var(--theme-ink);border-color:var(--theme-border);box-shadow:0 20px 70px #08142280}
+body:has(.shell) .app-modal::backdrop{background:#071321b3}
+body:has(.shell) .modal-header{background:var(--theme-surface);border-color:var(--theme-border)}
+body:has(.shell) .app-modal .icon-button{color:var(--theme-muted)}
+body:has(.shell) .app-modal .icon-button:hover{background:var(--theme-soft-raised)}
+body:has(.shell) .appearance-preview{background:var(--theme-surface);color:var(--theme-ink)}
+body:has(.shell) .preview-menu{background:var(--theme-soft);color:var(--theme-ink)}
+body:has(.shell) .color-swatch{border-color:var(--theme-surface)}
+body:has(.shell) :focus-visible{outline-color:var(--theme-accent)}
+.shell .sidebar-overlay{background:#071321b3}
+/* Shared high-contrast navy palette across every application page. */
+body{--primary:var(--theme-color, #365f8b);--on-primary:var(--theme-ink);--accent:var(--theme-accent);--soft:var(--theme-soft);--ink:var(--theme-ink);--muted:var(--theme-muted);--line:var(--theme-border);--bg:var(--theme-bg);--focus-ring:color-mix(in srgb,var(--theme-color) 35%,transparent);background:var(--theme-bg);color:var(--theme-ink);color-scheme:dark}
+:is(.student-welcome,.auth-shell,.shell,.candidate-shell,.exam-workspace){--primary:var(--theme-color, #365f8b);--on-primary:var(--theme-ink);--accent:var(--theme-accent);--soft:var(--theme-soft);--ink:var(--theme-ink);--muted:var(--theme-muted);--line:var(--theme-border);color:var(--theme-ink)}
+body:has(.shell){--ink:var(--theme-ink);--muted:var(--theme-muted);--accent:var(--theme-accent)}
+:is(.student-welcome,.auth-shell,.shell,.candidate-shell,.app-modal) :is(h1,h2,h3,h4,label,legend,strong,td:first-child){color:var(--theme-ink)}
+:is(.student-welcome,.auth-shell,.shell,.candidate-shell,.app-modal) :is(p,small,.muted,.eyebrow,.cell-meta,.metric-top,.metric-bottom,.info-row,.info-copy,.settings-scope,.settings-details dt,.question-form-label,.page-footer,.candidate-footer,.auth-support,.student-login-back,.header-breadcrumb,.today,.module-eyebrow,.ticket-top,.ticket-footer,.module-number){color:var(--theme-muted)}
+:is(.shell,.candidate-shell,.app-modal) :is(td,th,.text-link,.pagination,.tabs a,.module-badge,.pill,.portal-switch){color:var(--theme-ink)}
+:is(.shell,.candidate-shell,.app-modal) :is(input,select,textarea){background:var(--theme-input);border-color:var(--theme-border-strong);color:var(--theme-ink);color-scheme:dark;accent-color:var(--theme-accent)}
+:is(.shell,.candidate-shell,.app-modal) :is(input,textarea)::placeholder{color:var(--theme-muted)}
+:is(.shell,.candidate-shell,.app-modal) :is(button.secondary,a.secondary){background:var(--theme-soft);border-color:var(--theme-border-strong);color:var(--theme-ink)}
+:is(.shell,.candidate-shell,.app-modal) :is(.card,.tablewrap,.app-modal,.appearance-preview){background:var(--theme-surface);border-color:var(--theme-border);color:var(--theme-ink)}
+.app-modal,.modal-header{background:var(--theme-surface);color:var(--theme-ink);border-color:var(--theme-border)}
+.app-modal::backdrop{background:#071321b3}
+.app-modal .icon-button{color:var(--theme-ink)}
+:is(.shell,.candidate-shell,.app-modal) th{background:var(--theme-bg-raised);border-color:var(--theme-border)}
+:is(.shell,.candidate-shell,.app-modal) td{border-color:var(--theme-border)}
+:is(.shell,.candidate-shell,.app-modal) tbody tr:hover{background:var(--theme-soft)}
+:is(.shell,.candidate-shell,.app-modal) .pill{background:var(--theme-soft-raised);border-color:var(--theme-border-strong)}
+:is(.shell,.candidate-shell,.app-modal) .pill.inactive{background:var(--theme-soft);color:var(--theme-muted)}
+:is(.shell,.candidate-shell,.app-modal) .notice:not(.success):not(.error-notice){background:var(--theme-soft);border-color:var(--theme-border-strong);color:var(--theme-ink)}
+:is(.shell,.candidate-shell,.app-modal) .notice.success{background:#254e49;border-color:#508374;color:#d5ffed}
+:is(.shell,.candidate-shell,.app-modal) :is(.error-notice,.error){color:#ffd5df}
+:is(.shell,.candidate-shell,.app-modal) .error-notice{background:#552e3b;border-color:#a56376}
+.candidate-shell,.candidate-shell:has(.exam-workspace){background:var(--theme-bg);color:var(--theme-ink)}
+.candidate-shell .candidate-header{background:var(--theme-surface);border-color:var(--theme-border)}
+.candidate-shell .candidate-footer{background:var(--theme-bg);border-color:var(--theme-border);color:var(--theme-muted)}
+.candidate-shell .brand small,.candidate-shell .candidate-profile{color:var(--theme-muted)}
+.candidate-shell .avatar{background:var(--theme-soft-raised);color:var(--theme-ink)}
+.candidate-lobby .candidate-welcome-banner{background:linear-gradient(120deg,var(--theme-surface),var(--theme-soft));border-color:var(--theme-border)}
+.candidate-lobby .candidate-welcome-banner h1{color:var(--theme-ink)}
+.candidate-lobby .candidate-welcome-banner p,.candidate-lobby .candidate-welcome-date,.candidate-lobby .welcome-kicker{color:var(--theme-muted)}
+.candidate-lobby .candidate-welcome-icon{background:var(--theme-soft-raised);border-color:var(--theme-border-strong);color:var(--theme-ink)}
+.candidate-lobby .candidate-summary-strip>div{background:var(--theme-surface);border-color:var(--theme-border)}
+.candidate-lobby .candidate-summary-strip strong{color:var(--theme-ink)}
+.candidate-lobby .candidate-summary-strip>div>span:last-child,.candidate-lobby .info-row,.candidate-shell .info-copy,.candidate-shell .student-empty-state p{color:var(--theme-muted)}
+.candidate-lobby .candidate-exam-card{background:var(--theme-surface);border-color:var(--theme-border)}
+.candidate-lobby .candidate-exam-card.exam-ready:before{background:var(--theme-accent)}
+.candidate-lobby .info-row strong{color:var(--theme-ink)}
+.candidate-shell .summary-icon,.candidate-shell .student-empty-icon{background:var(--theme-soft-raised);color:var(--theme-ink)}
+.candidate-shell .student-empty-state{background:var(--theme-surface);border-color:var(--theme-border-strong)}
+.candidate-shell button:disabled{opacity:1;background:var(--theme-soft);color:var(--theme-muted);border-color:var(--theme-border-strong)}
+.exam-workspace{--exam-blue:var(--theme-accent);color:var(--theme-ink)}
+.exam-heading{border-color:var(--theme-accent)}.exam-heading .eyebrow,.exam-heading p{color:var(--theme-muted)}
+.exam-workspace .exam-part-tabs{background:var(--theme-bg);box-shadow:0 6px 10px #08142230}
+.exam-workspace .exam-part-tabs button{background:var(--theme-surface);border-color:var(--theme-border-strong);color:var(--theme-ink)}
+.exam-workspace .exam-part-tabs button.active{background:var(--theme-hover);border-color:var(--theme-accent);color:var(--theme-ink);box-shadow:inset 0 -3px var(--theme-accent)}
+.exam-workspace .exam-section-heading{background:var(--theme-soft);border-color:var(--theme-border-strong)}
+.exam-workspace .exam-section-heading :is(h2,.eyebrow,span){color:var(--theme-ink)}
+.exam-workspace .question-card{background:var(--theme-surface);border-color:var(--theme-border-strong)}
+.exam-workspace .question-card legend{background:var(--theme-soft-raised);border-color:#8caac8;color:var(--theme-ink)}
+.exam-workspace .question-current{border-color:var(--theme-accent);box-shadow:0 0 0 2px #c1ddf740}
+.exam-workspace .question-content,.exam-workspace .passage{color:var(--theme-ink)}
+.exam-workspace .passage{background:var(--theme-bg-raised);border-color:var(--theme-border)}
+.exam-workspace .answer-option{background:var(--theme-bg-raised);border-color:var(--theme-border-strong);color:var(--theme-ink)}
+.exam-workspace .answer-option:hover{background:var(--theme-soft-raised);border-color:var(--theme-accent)}
+.exam-workspace .answer-option.selected{background:var(--theme-soft-raised);border-color:var(--theme-accent);color:var(--theme-ink);box-shadow:inset 3px 0 var(--theme-accent)}
+.exam-workspace .exam-navigator,.exam-workspace .reading-passage-panel{background:var(--theme-surface);border-color:var(--theme-border-strong)}
+.exam-workspace .reading-passage-heading{background:var(--theme-soft);color:var(--theme-ink);border-color:var(--theme-border-strong)}
+.exam-workspace .exam-navigator>p,.exam-workspace .exam-nav-legend,.exam-workspace .exam-part-navigation>span{color:var(--theme-muted)}
+.exam-workspace .exam-nav-title>strong,.exam-workspace .exam-nav-part-title,.exam-workspace .exam-nav-part-title[aria-pressed=true]{color:var(--theme-ink)}
+.exam-workspace .exam-nav-part{border-color:var(--theme-border)}
+.exam-workspace .exam-question-grid button{background:var(--theme-soft);border-color:#8caac8;color:var(--theme-ink)}
+.exam-workspace .exam-question-grid button.answered,.exam-workspace .exam-nav-legend i.done{background:var(--theme-hover);border-color:var(--theme-accent);color:var(--theme-ink)}
+.exam-workspace .exam-question-grid button.current{outline-color:#ffdc98}
+.exam-workspace .exam-progress{background:var(--theme-soft-raised)}.exam-workspace .exam-progress>span{background:var(--theme-accent)}
+.exam-workspace .exam-nav-legend i{background:var(--theme-soft);border-color:#8caac8}
+.exam-workspace .exam-empty{background:var(--theme-surface);border-color:var(--theme-border-strong);color:var(--theme-muted)}
+.exam-workspace .attempt-toolbar{background:var(--theme-bg-raised);border-color:var(--theme-border-strong);color:var(--theme-ink)}
+.exam-workspace .attempt-toolbar>div span,.exam-workspace .save-status,.exam-fixed-header label{color:var(--theme-muted)}
+.exam-workspace .time-warning{color:#ffe0a6}
+.exam-workspace .exam-submit,.exam-workspace .attempt-toolbar>button:not(.secondary){background:var(--theme-hover);color:var(--theme-ink)}
+.exam-workspace .exam-watermark .brand-copy :is(strong,small),.exam-workspace .exam-watermark .brand-mark{color:var(--theme-accent)}
+.exam-privacy-screen{background:var(--theme-bg);color:var(--theme-ink)}
+.exam-privacy-card{background:var(--theme-surface);border-color:var(--theme-border-strong)}
+.exam-privacy-card h1{color:var(--theme-ink)}.exam-privacy-card :is(p,.eyebrow,.exam-privacy-note){color:var(--theme-muted)}
+.exam-privacy-symbol{background:var(--theme-soft-raised);color:var(--theme-ink)}
+.exam-privacy-card .exam-exit-warning{background:#57462f;border-color:#bb935b;color:#ffe3b6}
+.listening-score-card,.toeic-total{background:var(--theme-soft);border-color:var(--theme-border-strong);color:var(--theme-ink)}
+.result-score,.result-score span,.toeic-total .result-score span{color:var(--theme-ink)}
+.result-icon{background:#254e49;color:#d5ffed}
+:is(.candidate-shell,.app-modal) audio{color-scheme:dark}
+/* Explicitly brighten small text left by older component rules. */
+.shell .sidebar :is(.brand small,.nav-group-toggle,.nav-link,.sidebar-bottom>small),.shell .topbar :is(.header-breadcrumb,.today,.profile-name small,.profile-menu summary){color:var(--theme-ink)}
+.student-hero h1>span,.student-hero-copy>p,.student-section-heading>span,.student-section-heading .eyebrow,.welcome-kicker,.welcome-trust,.student-module-card>p,.student-module-card>small,.module-eyebrow,.module-number,.student-public-links,.student-public-footer{color:var(--theme-ink)}
+.hero-floating-label small,.ticket-top,.ticket-footer,.exam-preview-ticket>p,.student-start-guide small,.student-start-guide strong{color:var(--theme-ink)}
+.auth-shell .auth-story-copy p,.auth-shell .auth-organization,.auth-shell .auth-entry .muted,.auth-shell .auth-support,.auth-shell .student-login-back,.auth-shell .auth-story-copy .eyebrow,.auth-shell .eyebrow,.auth-shell .brand small{color:var(--theme-ink)}
+:is(.student-welcome,.auth-shell,.shell,.candidate-shell) .brand strong{color:var(--theme-ink)}
+:is(.shell,.candidate-shell,.app-modal) :focus-visible{outline-color:var(--theme-accent)}
+/* Keep dialogs inside the viewport; review long exams one question at a time. */
+.app-modal{max-height:calc(100dvh - 24px);overflow:hidden}
+.app-modal[open]{display:flex;flex-direction:column}
+.app-modal .modal-header{flex:0 0 auto;position:static}
+.app-modal .modal-body{min-height:0;overflow:auto;overscroll-behavior:contain}
+.result-review-form>.notice{margin-bottom:12px;padding:10px 14px}
+.review-score-strip{display:flex;flex-wrap:wrap;gap:8px 20px;padding:12px 14px;background:var(--theme-soft);border:1px solid var(--theme-border-strong);border-radius:10px;font-size:13px;color:var(--theme-ink)}
+.review-question-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:14px 0}
+.review-question-nav label{display:flex;align-items:center;gap:8px;margin:0}
+.review-question-nav select{width:auto;min-width:100px;padding:7px 10px}
+.result-review-form .grade-question{margin:0;padding:14px 0;border-top:1px solid var(--theme-border);border-bottom:0}
+.result-review-form .grade-question h2{font-size:16px;margin-bottom:10px}
+.result-review-form .grade-question p{margin-bottom:10px}
+.result-review-form .result-answer{margin:8px 0;padding:10px 14px}
+.result-review-form .modal-actions{margin-top:12px;padding-top:12px}
+.submission-receipt{margin:20px auto;padding:28px 24px}
+.submission-receipt .result-icon{margin-bottom:12px}
+@media(max-width:600px){.app-modal .modal-header{padding:12px 16px}.app-modal .modal-body{padding:16px}.review-question-nav{gap:6px}.review-question-nav button{padding:7px 9px;font-size:11px}.review-question-nav select{min-width:75px}.review-score-strip{gap:6px 14px;font-size:12px}}
+.review-pdf-actions{margin-bottom:12px;align-items:center}.review-pdf-actions small{flex-basis:100%;font-size:12px}
+
+/* Primary controls use the saved contrast color, including bright palettes. */
+.student-main-cta,.auth-shell .auth-submit,.shell .sidebar .nav-link.active,.shell .sidebar .brand-mark,.student-welcome .brand-mark,.auth-shell .brand-mark,.candidate-shell .brand-mark{background:var(--theme-color);color:var(--theme-on-primary)}
+.shell .sidebar .nav-link.active:after{background:var(--theme-on-primary)}
+:is(.shell,.candidate-shell,.app-modal) :is(.actions,.modal-actions,.filter-row) > :is(button,.btn):not(.secondary):not(.danger),.candidate-exam-card .section-gap>button,.exam-workspace .exam-submit,.exam-workspace .exam-header-actions button:not(.secondary){background:var(--theme-color);color:var(--theme-on-primary)}
+.shell .sidebar .brand-mark.custom-logo{background:transparent}
+body:has(.shell) .appearance-preview .preview-menu{background:color-mix(in srgb,var(--preview-color) 35%,#203247);color:var(--theme-ink)}
+body:has(.shell) .appearance-preview .preview-button{background:var(--preview-color);color:var(--preview-on-primary,#fff)}
+/* Brighter, muted surfaces retain the administrator's selected hue. */
+:root{--theme-bg:color-mix(in srgb,var(--theme-color) 14%,#3b4c62);--theme-bg-raised:color-mix(in srgb,var(--theme-color) 18%,#42556d);--theme-surface:color-mix(in srgb,var(--theme-color) 18%,#53677e);--theme-soft:color-mix(in srgb,var(--theme-color) 24%,#5b718a);--theme-soft-raised:color-mix(in srgb,var(--theme-color) 30%,#627c97);--theme-input:color-mix(in srgb,var(--theme-color) 16%,#3e526a);--theme-border:color-mix(in srgb,var(--theme-color) 22%,#93a9c0);--theme-border-strong:color-mix(in srgb,var(--theme-color) 18%,#bfd0e2)}
+/* Login and portal pages occupy one viewport, without document scrolling. */
+html:has(.auth-shell),html:has(.student-welcome),body:has(.auth-shell),body:has(.student-welcome){height:100%;overflow:hidden;overscroll-behavior:none}
+.auth-shell,.student-auth{height:calc(100dvh - 40px);min-height:0;overflow:hidden;grid-template-columns:1fr 1fr}
+.auth-shell .auth-story,.student-auth .auth-story{padding:clamp(20px,4vh,42px) 8%;gap:20px;min-height:0}
+.auth-shell .auth-story h1{font-size:clamp(26px,3.4vw,42px);line-height:1.25;margin-bottom:16px}
+.auth-shell .auth-story-copy>p{margin-bottom:12px;line-height:1.6}
+.auth-shell .student-login-module{margin-bottom:16px;padding:7px 12px}
+.auth-shell .auth-entry,.student-auth .auth-entry{min-height:0;padding:16px 24px;align-items:center}
+.auth-shell .auth-form-wrap,.student-auth .auth-form-wrap{max-width:440px;padding:22px 26px;min-width:0}
+.auth-shell .student-login-back{margin-bottom:12px}
+.auth-shell .portal-label{margin-bottom:12px;padding:5px 9px}
+.auth-shell .auth-entry .eyebrow{margin-bottom:8px}
+.auth-shell .auth-entry h2{margin:8px 0;font-size:25px;line-height:1.25}
+.auth-shell .auth-entry .muted{margin-bottom:12px;font-size:13px;line-height:1.5}
+.auth-shell .auth-login-form{margin-top:16px}
+.auth-shell .auth-login-form .field{margin-bottom:14px}
+.auth-shell .auth-login-form input{min-height:42px;padding:9px 12px}
+.auth-shell .auth-login-form .password-field input{padding-right:60px}
+.auth-shell .auth-submit{min-height:42px;margin-top:2px}
+.auth-shell .portal-switch{margin-top:14px}
+.auth-shell .auth-support{margin:14px 0 0;line-height:1.6}
+.auth-shell~.login-footer{height:40px;padding:10px 16px;line-height:20px;font-size:10px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+@media(max-height:700px){.auth-shell .auth-form-wrap{padding:16px 22px}.auth-shell .auth-support{display:none}.auth-shell .auth-story .auth-steps{display:none}.auth-shell .auth-login-form{margin-top:12px}.auth-shell .auth-entry .eyebrow{display:none}.auth-shell .portal-label{margin-bottom:6px}.auth-shell .auth-story h1{font-size:30px}}
+@media(max-width:700px){.auth-shell,.student-auth{display:grid;grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr)}.auth-shell .auth-story,.student-auth .auth-story{padding:14px 22px;gap:0;border-bottom:1px solid var(--theme-border)}.auth-shell .auth-story-copy,.student-auth .auth-story-copy,.auth-shell .auth-organization{display:none}.auth-shell .auth-story .brand-mark{width:36px;height:36px}.auth-shell .auth-entry,.student-auth .auth-entry{padding:12px 18px;align-items:center}.auth-shell .auth-form-wrap,.student-auth .auth-form-wrap{padding:18px 22px}.auth-shell .auth-support{margin-top:12px}.auth-shell .auth-entry h2{font-size:24px}}
+@media(max-height:540px){.auth-shell,.student-auth{height:calc(100dvh - 28px)}.auth-shell .auth-entry{padding:8px 16px}.auth-shell .auth-form-wrap{padding:12px 18px}.auth-shell .auth-entry>.auth-form-wrap>.muted,.auth-shell .portal-label,.auth-shell .auth-support{display:none}.auth-shell .student-login-back{margin-bottom:6px}.auth-shell .auth-login-form{margin-top:10px}.auth-shell .auth-login-form .field{margin-bottom:9px}.auth-shell .auth-login-form label{margin-bottom:4px}.auth-shell .auth-login-form input{min-height:36px;padding-top:6px;padding-bottom:6px}.auth-shell .password-toggle{top:1px;min-height:34px}.auth-shell .auth-submit{min-height:36px;padding:6px 12px}.auth-shell .portal-switch{margin-top:9px}.auth-shell~.login-footer{height:28px;padding:4px 12px}.auth-shell .auth-story-copy>p{display:none}}
+@media(max-height:540px) and (max-width:700px){.auth-shell,.student-auth{grid-template-rows:minmax(0,1fr)}.auth-shell .auth-story{display:none}.auth-shell .auth-entry h2{font-size:21px;margin:4px 0}}
+/* Compact selection screen for /exam/login, including all three exam options. */
+.student-welcome{height:100dvh;min-height:0;display:grid;grid-template-rows:auto minmax(0,1fr) auto;overflow:hidden}
+.student-welcome .student-public-header{width:100%;padding:16px 30px}
+.student-welcome .student-landing-main{display:grid;grid-template-rows:minmax(0,.8fr) minmax(0,1.4fr) auto;gap:14px;min-height:0;width:100%;padding:0 30px}
+.student-welcome .student-hero{display:block;min-height:0;padding:8px 0;overflow:hidden}
+.student-welcome .student-hero-art{display:none}
+.student-welcome .student-hero-copy{max-width:900px}
+.student-welcome .welcome-kicker{margin-bottom:10px}
+.student-welcome .student-hero h1{font-size:clamp(28px,3.1vw,43px);line-height:1.15;margin-bottom:12px;letter-spacing:-1px}
+.student-welcome .student-hero h1 br{display:none}
+.student-welcome .student-hero-copy>p{max-width:820px;font-size:13px;line-height:1.6;margin-bottom:12px}
+.student-welcome .student-main-cta{padding:8px 16px;font-size:12px}
+.student-welcome .welcome-trust{display:none}
+.student-welcome .student-exam-options{padding:0;min-height:0;display:flex;flex-direction:column}
+.student-welcome .student-section-heading{margin-bottom:12px;gap:10px}
+.student-welcome .student-section-heading h2{font-size:21px}
+.student-welcome .student-section-heading .eyebrow{display:none}
+.student-welcome .student-module-grid{flex:1;min-height:0;gap:16px}
+.student-welcome .student-module-card{padding:18px 22px 0;animation:none}
+.student-welcome .module-card-top{margin-bottom:12px}
+.student-welcome .module-symbol{width:44px;height:44px;border-radius:13px}
+.student-welcome .module-number{font-size:24px}
+.student-welcome .module-eyebrow{margin-bottom:6px}
+.student-welcome .student-module-card h3{font-size:24px;margin-bottom:8px}
+.student-welcome .student-module-card>p{min-height:0;margin-bottom:10px}
+.student-welcome .module-tags{margin-bottom:10px}
+.student-welcome .student-module-card>small{margin-bottom:12px}
+.student-welcome .module-card-action{padding:10px 0}
+.student-welcome .student-start-guide{margin:0;padding:12px 18px;gap:16px}
+.student-welcome .student-public-footer{width:calc(100% - 60px);margin:0 auto;padding:12px 0;font-size:9px;gap:8px}
+@media(max-height:780px){.student-welcome .student-main-cta,.student-welcome .student-start-guide,.student-welcome .module-tags{display:none}.student-welcome .student-landing-main{grid-template-rows:minmax(0,.7fr) minmax(0,1.4fr)}.student-welcome .student-module-card>small{display:none}.student-welcome .student-hero-copy>p{margin-bottom:0}.student-welcome .student-public-header{padding-top:12px;padding-bottom:12px}}
+@media(max-width:800px){.student-welcome .student-landing-main{grid-template-rows:auto minmax(0,1fr);padding:0 20px;gap:12px}.student-welcome .student-hero{padding:8px 0}.student-welcome .student-hero h1{font-size:28px}.student-welcome .student-hero-copy>p{font-size:12px;line-height:1.5}.student-welcome .student-main-cta,.student-welcome .student-start-guide{display:none}.student-welcome .student-section-heading{display:block;margin-bottom:10px}.student-welcome .student-section-heading h2{font-size:18px}.student-welcome .student-section-heading>span{display:none}.student-welcome .student-module-grid{grid-template-columns:1fr;grid-template-rows:repeat(3,minmax(0,1fr));gap:10px}.student-welcome .student-module-card{display:grid;grid-template-columns:48px minmax(0,1fr) auto;grid-template-rows:auto auto;gap:0 12px;align-content:center;padding:12px 16px}.student-welcome .module-card-top{grid-column:1;grid-row:1/3;margin:0}.student-welcome .module-number,.student-welcome .module-eyebrow,.student-welcome .module-tags,.student-welcome .student-module-card>small{display:none}.student-welcome .student-module-card h3{grid-column:2;grid-row:1;font-size:21px;margin:0}.student-welcome .student-module-card>p{grid-column:2;grid-row:2;font-size:11px;margin:3px 0 0}.student-welcome .module-card-action{grid-column:3;grid-row:1/3;border:0;padding:0}.student-welcome .module-card-action>span:first-child{display:none}.student-welcome .student-public-footer{width:calc(100% - 40px);flex-direction:row;font-size:8px}.student-welcome .student-public-footer>span:last-child{display:none}}
+@media(max-height:560px){.student-welcome .welcome-kicker,.student-welcome .student-hero-copy>p{display:none}.student-welcome .student-hero h1{font-size:25px;margin-bottom:0}.student-welcome .student-module-card>p,.student-welcome .module-eyebrow,.student-welcome .module-tags,.student-welcome .student-module-card>small{display:none}.student-welcome .student-public-header{padding-top:8px;padding-bottom:8px}.student-welcome .student-public-footer{padding:6px 0}.student-welcome .student-module-card{padding-top:10px}.student-welcome .student-module-card h3{font-size:20px}.student-welcome .module-card-top{margin-bottom:4px}.student-welcome .student-landing-main{gap:8px}}/* Allow compact portal grids to shrink to the viewport width. */
+.student-welcome{grid-template-columns:minmax(0,1fr)}
+.student-welcome .student-public-header,.student-welcome .student-landing-main,.student-welcome .student-hero-copy,.student-welcome .student-exam-options,.student-welcome .student-module-grid,.student-welcome .student-module-card{min-width:0;max-width:100%}
+.student-welcome .student-hero h1{overflow-wrap:anywhere}
+@media(max-width:800px){.student-welcome .student-landing-main{grid-template-columns:minmax(0,1fr)}.student-welcome .student-public-header{margin:0 auto}.student-welcome .student-hero-copy{width:100%}.student-welcome .student-hero h1{line-height:1.2}.student-welcome .student-module-card h3{overflow-wrap:anywhere}}
+.student-welcome .student-hero h1>span:before{content:' '}
+
+/* Soft daylight palette: light grey surfaces, clear text, selected-color accents. */
+:root{--theme-bg:#E5EAF0;--theme-bg-raised:#DEE6EE;--theme-surface:#F1F4F7;--theme-soft:color-mix(in srgb,var(--theme-color) 7%,#E7EDF3);--theme-soft-raised:color-mix(in srgb,var(--theme-color) 10%,#E2EAF2);--theme-input:#F5F7F9;--theme-border:#B7C5D3;--theme-border-strong:#889DB2;--theme-ink:#20354B;--theme-muted:#4C6278;--theme-link:color-mix(in srgb,var(--theme-color) 35%,#162B43);--theme-accent:var(--theme-link);--theme-hover:color-mix(in srgb,var(--theme-color) 80%,#243A52)}
+body,body:has(.shell){--ink:var(--theme-ink);--muted:var(--theme-muted);color:var(--theme-ink);color-scheme:light;background:var(--theme-bg)}
+:is(.student-welcome,.auth-shell,.shell,.candidate-shell,.exam-workspace){--ink:var(--theme-ink);--muted:var(--theme-muted);--on-primary:var(--theme-on-primary);color:var(--theme-ink);color-scheme:light}
+:is(.shell,.candidate-shell,.app-modal,.auth-shell) :is(input,select,textarea),.auth-shell .field input{color-scheme:light;color:var(--theme-ink);background:var(--theme-input)}
+:is(.shell,.candidate-shell,.app-modal) audio{color-scheme:light}
+:is(.shell,.candidate-shell,.auth-shell,.student-welcome,.app-modal) :is(.text-link,.module-badge,.portal-label,.portal-switch,.module-card-action,.welcome-kicker){color:var(--theme-link)}
+.student-main-cta,.auth-shell .auth-submit,.shell .sidebar .nav-link.active,.shell .sidebar .brand-mark,.student-welcome .brand-mark,.auth-shell .brand-mark,.candidate-shell .brand-mark,.exam-workspace .exam-part-tabs button.active,.exam-workspace .exam-question-grid button.answered{background:var(--theme-color);color:var(--theme-on-primary)}
+.exam-workspace .exam-part-tabs button.active :is(strong,span,small){color:var(--theme-on-primary)}
+.exam-workspace .exam-question-grid button.current{outline-color:var(--theme-link)}
+.exam-workspace .answer-option.selected{background:var(--theme-soft-raised);color:var(--theme-ink);border-color:var(--theme-color)}
+.exam-workspace .exam-progress>span,.exam-workspace .exam-nav-legend i.done{background:var(--theme-color)}
+.shell .topbar,.shell .sidebar{box-shadow:none}
+.student-module-card,.hero-floating-label,.exam-preview-ticket,.auth-shell .auth-form-wrap,.student-auth .auth-form-wrap{box-shadow:0 8px 24px #20354b12}
+:is(.shell,.candidate-shell,.app-modal) .notice.success{background:#DEEEE6;border-color:#8BB5A0;color:#20563C}
+:is(.shell,.candidate-shell,.app-modal) .error-notice{background:#F3E2E6;border-color:#CBA0AC;color:#802C43}
+:is(.shell,.candidate-shell,.app-modal,.auth-shell) .error{color:#922E47}
+:is(.shell,.candidate-shell,.app-modal) .green,.result-icon{background:#DEEEE6;color:#20563C}
+:is(.shell,.candidate-shell,.app-modal) .orange{background:#F1E8D8;color:#735025}
+.exam-privacy-card .exam-exit-warning{background:#F1E8D8;border-color:#BBA076;color:#735025}
+.exam-workspace .time-warning{color:#922E47}
+.exam-workspace .exam-watermark .brand-copy :is(strong,small),.exam-workspace .exam-watermark .brand-mark{color:#405A73}
+body:has(.shell) .appearance-preview .preview-menu{background:color-mix(in srgb,var(--preview-color) 10%,#E7EDF3);color:var(--theme-ink)}
+/* Saved page background, with readable light/dark text and coordinated surfaces. */
+:root{--page-background:#E5EAF0;--page-ink:#20354B;--page-muted:#4C6278;--page-surface:#F9FAFB;--page-border:#889DB2;--page-scheme:light;--theme-bg:var(--page-background);--theme-bg-raised:color-mix(in srgb,var(--page-background) 88%,var(--page-border));--theme-surface:color-mix(in srgb,var(--page-background) 45%,var(--page-surface));--theme-input:color-mix(in srgb,var(--page-background) 25%,var(--page-surface));--theme-soft:color-mix(in srgb,var(--theme-color) 7%,var(--theme-surface));--theme-soft-raised:color-mix(in srgb,var(--theme-color) 10%,var(--theme-surface));--theme-border:color-mix(in srgb,var(--page-background) 45%,var(--page-border));--theme-border-strong:var(--page-border);--theme-ink:var(--page-ink);--theme-muted:var(--page-muted);--theme-link:color-mix(in srgb,var(--theme-color) 35%,var(--page-ink))}
+body,body:has(.shell),:is(.student-welcome,.auth-shell,.shell,.candidate-shell,.exam-workspace){color-scheme:var(--page-scheme)}
+:is(.shell,.candidate-shell,.app-modal,.auth-shell) :is(input,select,textarea),.auth-shell .field input{color-scheme:var(--page-scheme)}
+body:has(.shell) .appearance-preview{background:var(--preview-background);color:var(--preview-ink)}
+body:has(.shell) .appearance-preview :is(strong,p,.eyebrow,.preview-field){color:var(--preview-ink)}
+body:has(.shell) .appearance-preview .preview-menu{background:color-mix(in srgb,var(--preview-color) 10%,var(--preview-background));color:var(--preview-ink)}
+.background-color-sample{display:inline-block;width:18px;height:18px;border:1px solid var(--theme-border-strong);border-radius:4px;vertical-align:middle}
+/* Unified daylight appearance for all shared screens. */
+:is(.student-welcome,.auth-shell,.shell,.candidate-shell,.app-modal) .brand-mark.custom-logo{background:transparent;box-shadow:none}
+:is(.shell,.candidate-shell,.app-modal) :is(.result-answer,.passage,.edit-access,.recording-controls,.settings-brand-preview){background:var(--theme-input);border-color:var(--theme-border);color:var(--theme-ink)}
+.shell .question-bank-tabs button.active{background:var(--theme-soft-raised);border-color:var(--theme-color);color:var(--theme-ink);box-shadow:inset 4px 0 var(--theme-color)}
+.shell .question-bank-tabs .active b{background:var(--theme-color);color:var(--theme-on-primary)}
+:is(.shell,.candidate-shell,.app-modal) :is(.pill,.module-badge,.blue,.avatar){background:var(--theme-soft);color:var(--theme-link)}
+:is(.shell,.candidate-shell,.app-modal) .pill.inactive{background:var(--theme-bg-raised);color:var(--theme-muted)}
+.exam-workspace .exam-fixed-header,.exam-workspace .attempt-toolbar{background:var(--theme-surface);color:var(--theme-ink);border-color:var(--theme-border);box-shadow:0 4px 14px #20354b12}
+.exam-workspace .exam-fixed-header>div>strong,.exam-workspace .exam-fixed-header>div>span,.exam-workspace .exam-fixed-header label,.exam-workspace .save-status{color:var(--theme-ink)}
+.exam-fixed-header .exam-header-part select{background:var(--theme-input);color:var(--theme-ink);border-color:var(--theme-border-strong)}
+.exam-workspace .time-warning,.exam-workspace .exam-fixed-header .time-warning{color:#922E47}
+.exam-workspace .exam-part-tabs{box-shadow:0 4px 10px #20354b0c}
+.exam-workspace .reading-passage-body{scrollbar-color:var(--theme-border-strong) var(--theme-bg)}
+:is(.candidate-shell,.app-modal) .listening-score-card,.toeic-total,.review-score-strip{background:var(--theme-soft);color:var(--theme-ink);border-color:var(--theme-border)}
+:is(.student-welcome,.auth-shell,.shell,.candidate-shell) .brand small{color:var(--theme-muted)}
+.student-welcome .hero-floating-label>span,.student-welcome .ticket-emblem,.student-welcome .ticket-mini-logo,.student-welcome .module-symbol{background:var(--theme-soft-raised);color:var(--theme-link)}
+.student-welcome .student-main-cta:hover,.auth-shell .auth-submit:hover{background:var(--theme-hover);color:#ffffff}
+:is(.shell,.candidate-shell,.app-modal) .secondary:hover{background:var(--theme-soft-raised);color:var(--theme-ink)}
+:is(.shell,.candidate-shell,.app-modal) .danger{background:#A83E53;color:#ffffff}
+/* Sidebar color is independent of page background and primary buttons. */
+:root{--menu-color:#E0E7EF;--menu-ink:#20354B;--menu-muted:#4C6278}
+.shell .sidebar{background:var(--menu-color);color:var(--menu-ink);border-color:color-mix(in srgb,var(--menu-color) 75%,var(--menu-ink))}
+.shell .sidebar .brand strong{color:var(--menu-ink)}
+.shell .sidebar :is(.brand small,.nav-group-toggle,.nav-link,.sidebar-bottom>small){color:var(--menu-muted)}
+.shell .sidebar .nav-link:hover,.shell .sidebar .nav-group-toggle:hover{background:color-mix(in srgb,var(--menu-color) 88%,var(--menu-ink));color:var(--menu-ink)}
+.shell .sidebar .nav-link.active{background:var(--menu-ink);color:var(--menu-color);box-shadow:none}
+.shell .sidebar .nav-link.active:after{background:var(--menu-color)}
+.shell .sidebar .brand,.shell .sidebar-bottom{border-color:color-mix(in srgb,var(--menu-color) 75%,var(--menu-ink))}
+body:has(.shell) .appearance-preview .preview-menu{background:var(--preview-menu);color:var(--preview-menu-ink)}
+/* Green navigation, headers, controls and table headings; white content surfaces. */
+:root{--theme-bg:var(--page-background,#fff);--theme-bg-raised:var(--page-background,#fff);--theme-surface:var(--page-background,#fff);--theme-input:var(--page-background,#fff);--theme-soft:var(--page-background,#fff);--theme-soft-raised:var(--page-background,#fff)}
+.shell .topbar,.candidate-shell .candidate-header,.student-welcome .student-public-header,.app-modal .modal-header,.exam-workspace .exam-fixed-header,.exam-workspace .attempt-toolbar,.exam-workspace .reading-passage-heading{background:var(--theme-color);color:var(--theme-on-primary);border-color:var(--theme-color)}
+.shell .topbar :is(.topbar-heading>strong,.header-breadcrumb,.today,.profile-name strong,.profile-name small,.profile-menu summary,.icon-button),.candidate-shell .candidate-header :is(.brand strong,.brand small,.candidate-profile,.candidate-user-chip),.student-welcome .student-public-header :is(.brand strong,.brand small,.student-public-links),.app-modal .modal-header :is(h2,.icon-button),.exam-workspace .exam-fixed-header :is(strong,span,label),.exam-workspace .reading-passage-heading :is(strong,span){color:var(--theme-on-primary)}
+.shell .topbar .icon-button,.shell .topbar .avatar{background:transparent;color:var(--theme-on-primary);border:1px solid #ffffff60}
+.shell .topbar .profile-dropdown{background:var(--theme-surface);color:var(--theme-ink)}
+.shell .topbar .profile-dropdown :is(button,.profile-email){color:var(--theme-ink)}
+:is(.shell,.candidate-shell,.app-modal) :is(th,thead){background:var(--theme-color);color:var(--theme-on-primary);border-color:#ffffff40}
+:is(.shell,.candidate-shell,.app-modal) th :is(strong,span,small){color:var(--theme-on-primary)}
+:is(.shell,.candidate-shell,.app-modal) :is(table,tbody,td){background:var(--theme-surface);color:var(--theme-ink)}
+:is(.shell,.candidate-shell,.app-modal) tbody tr:hover,:is(.shell,.candidate-shell,.app-modal) tbody tr:hover td{background:var(--theme-surface)}
+:is(.shell,.candidate-shell,.app-modal,.auth-shell) :is(button.secondary,a.secondary),.shell .question-bank-tabs button,.exam-workspace .exam-part-tabs button,.exam-workspace .exam-question-grid button{background:var(--theme-color);border-color:var(--theme-color);color:var(--theme-on-primary)}
+.shell .question-bank-tabs button :is(strong,small),.exam-workspace .exam-part-tabs button :is(strong,span,small){color:var(--theme-on-primary)}
+.shell .question-bank-tabs button.active{background:var(--theme-color);color:var(--theme-on-primary);border-color:var(--theme-color);box-shadow:inset 4px 0 #ffffffb3}
+.shell .question-bank-tabs button b,.shell .question-bank-tabs .active b{background:transparent;color:var(--theme-on-primary);border:1px solid #ffffff60}
+:is(.shell,.candidate-shell,.app-modal) .secondary:hover{background:var(--theme-hover);color:#fff}
+.exam-workspace .exam-part-tabs button.active,.exam-workspace .exam-question-grid button.answered{box-shadow:inset 0 -3px #ffffffb3}
+:is(.student-welcome,.auth-shell,.shell,.candidate-shell,.app-modal) :is(.card,.student-module-card,.student-start-guide,.hero-floating-label,.exam-preview-ticket,.auth-form-wrap,.module-tags span,.ticket-mini-logo,.ticket-emblem,.candidate-summary-strip>div,.candidate-welcome-icon,.student-empty-state,.review-score-strip,.listening-score-card,.toeic-total,.notice,.result-answer,.passage,.answer-option,.exam-empty,.exam-navigator,.reading-passage-panel){background:var(--theme-surface)}
+.student-welcome .student-module-card:hover,.exam-workspace .answer-option:hover,.exam-workspace .answer-option.selected,.shell .profile-dropdown button:hover{background:var(--theme-surface)}
+.student-welcome,.auth-shell .auth-story,.student-auth .auth-story,.candidate-lobby .candidate-welcome-banner{background:var(--theme-bg)}
+:is(.shell,.candidate-shell,.app-modal) .notice.success{background:var(--theme-surface);color:#20563C}
+:is(.shell,.candidate-shell,.app-modal) .error-notice,.exam-privacy-card .exam-exit-warning{background:var(--theme-surface);color:#922E47}
+.student-welcome .student-public-header{max-width:none}
+.student-welcome .student-public-links .staff-entry{background:transparent;color:var(--theme-on-primary);border-color:#ffffff60}
+.shell .sidebar .nav-link.active{background:transparent;color:var(--menu-ink);border:1px solid var(--menu-ink);box-shadow:inset 3px 0 var(--menu-ink)}
+.shell .sidebar .nav-link.active:after{background:var(--menu-ink)}
+/* Exam header contrast and answer-sheet completion states. */
+.candidate-shell .exam-workspace .exam-fixed-header :is(strong,span,label,.save-status){color:#FFFFFF}
+.candidate-shell .exam-workspace .exam-fixed-header .time-warning{color:#FFFFFF}
+.candidate-shell .exam-workspace .exam-fixed-header select{background:#FFFFFF;color:#20354B;border-color:#B7C5D3}
+.candidate-shell .exam-workspace .exam-question-grid button{background:#FFFFFF;color:#20354B;border:1px solid #889DB2;box-shadow:none}
+.candidate-shell .exam-workspace .exam-question-grid button:hover{background:#FFFFFF;color:#20354B;border-color:var(--theme-color);filter:none}
+.candidate-shell .exam-workspace .exam-question-grid button.answered,.candidate-shell .exam-workspace .exam-question-grid button.answered:hover{background:var(--theme-color);color:#FFFFFF;border-color:var(--theme-color);box-shadow:none}
+.candidate-shell .exam-workspace .exam-question-grid button.current{outline:2px solid var(--theme-color);outline-offset:2px}
+.candidate-shell .exam-workspace .exam-nav-legend i{background:#FFFFFF;border-color:#889DB2}
+.candidate-shell .exam-workspace .exam-nav-legend i.done{background:var(--theme-color);border-color:var(--theme-color)}

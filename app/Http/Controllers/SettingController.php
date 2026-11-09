@@ -32,7 +32,7 @@ class SettingController extends Controller
             'footer_text' => 'nullable|string|max:255', 'footer_note' => 'nullable|string|max:255', 'login_heading' => 'required|string|max:250', 'login_description' => 'nullable|string|max:600', 'support_email' => 'nullable|email|max:255',
             'logo' => 'nullable|image|mimes:png,jpg,jpeg,webp|max:2048|dimensions:max_width=2048,max_height=2048', 'remove_logo' => 'sometimes|boolean',
         ] : [
-            'primary_color' => ['required', 'regex:/^#[0-9a-fA-F]{6}$/'], 'font_family' => ['required', Rule::in(['system', 'arial', 'georgia'])], 'font_size' => 'required|integer|between:14,18', 'corner_radius' => 'required|integer|between:4,16',
+            'primary_color' => ['required', 'regex:/^#[0-9a-fA-F]{6}$/'], 'background_color' => ['sometimes', 'required', 'regex:/^#[0-9a-fA-F]{6}$/'], 'menu_color' => ['sometimes', 'required', 'regex:/^#[0-9a-fA-F]{6}$/'], 'font_family' => ['required', Rule::in(['system', 'arial', 'georgia'])], 'font_size' => 'required|integer|between:14,18', 'corner_radius' => 'required|integer|between:4,16',
         ];
         $data = $request->validate($rules);
         $newPath = null;

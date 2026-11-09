@@ -53,6 +53,7 @@ $management = function () {
     Route::get('/results', [ResultController::class, 'index']);
     Route::get('/results/export', [ResultController::class, 'export']);
     Route::put('/results/{examAttempt}', [ResultController::class, 'grade']);
+    Route::get('/results/{examAttempt}/pdf', [ResultController::class, 'pdf']);
     Route::get('/results/{examAttempt}/recordings/{questionId}', [ResultController::class, 'recording']);
 };
 $candidate = function () {

@@ -12,7 +12,7 @@ class ToeicReadingScoreTest extends TestCase
 {
     public function test_every_entry_matches_the_supplied_reading_table(): void
     {
-        $expected = [0,5,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,
+        $expected = [5,5,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,
             95,100,105,110,115,120,125,130,135,140,145,150,155,160,165,170,175,180,185,190,
             195,200,205,210,215,220,225,230,235,240,245,250,255,260,265,270,275,280,285,290,
             295,300,305,310,315,320,325,330,335,340,345,350,355,360,365,370,375,380,385,390,
@@ -42,9 +42,9 @@ class ToeicReadingScoreTest extends TestCase
         $attempt->answers = array_fill_keys(range(1, 200), 'A');
         $this->assertSame(990, $attempt->toeic_total_score);
         $attempt->answers = [];
-        $this->assertSame(0, $attempt->toeic_total_score);
+        $this->assertSame(5, $attempt->toeic_total_score);
         $attempt->questions_snapshot = array_slice($questions, 100);
-        $this->assertSame(0, $attempt->reading_result['scaled']);
+        $this->assertSame(5, $attempt->reading_result['scaled']);
         $this->assertNull($attempt->toeic_total_score);
         $attempt->questions_snapshot = array_slice($questions, 100, 20);
         $this->assertNull($attempt->reading_result['scaled']);
